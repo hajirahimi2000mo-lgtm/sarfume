@@ -1,0 +1,80 @@
+
+/* ۱. کانتینر اصلی صفحه */
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  box-sizing: border-box;
+}
+
+/* ۲. فاصله‌گذاری عمودی بخش‌ها */
+.section {
+  padding-block: 4.5rem;
+}
+
+.section--sm {
+  padding-block: 2.5rem;
+}
+
+/* ۳. گرید اصلی نمایش کارت‌های محصول */
+.products-grid,
+#products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.8rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ۴. سیستم‌های گرید کمکی */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+/* ۵. واکنش‌گرایی لایه‌بندی و گریدها */
+@media (max-width: 1024px) {
+  .products-grid,
+  #products-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-block: 3.5rem;
+  }
+
+  .container {
+    padding-inline: 1rem;
+  }
+
+  .products-grid,
+  #products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid,
+  #products-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

@@ -1,0 +1,153 @@
+
+(function () {
+  "use strict";
+
+  // تابع فرمت قیمت به فارسی
+  function formatPrice(p) {
+    if (typeof p === "number") {
+      return p.toLocaleString("fa-IR") + " تومان";
+    }
+    return p || "تماس بگیرید";
+  }
+
+  // دریافت آی‌دی محصول از Query Params آدرس بار
+  function getProductIdFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return parseInt(params.get("id"), 10);
+  }
+
+  // دریافت دیتابیس محصولات
+  function getProductList() {
+    if (Array.isArray(window.products)) {
+      return window.products;
+    }
+    return [];
+  }
+
+  // افزودن مستقیم به سبد خرید و ذخیره در LocalStorage
+  function handleAddToCart(product) {
+    let cart = [];
+    try {
+      cart = JSON.parse(localStorage.getItem("sarfume_cart")) || [];
+    } catch (e) {
+      cart = [];
+    }
+
+    const existingIndex = cart.findIndex((item) => item.id === product.id);
+    if (existingIndex > -1) {
+      cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+    } else {
+      cart.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        rawPrice: product.rawPrice || 0,
+        image: product.image,
+        quantity: 1,
+      });
+    }
+
+    localStorage.setItem("sarfume_cart", JSON.stringify(cart));
+  }
+
+  // رندر قالب محصول
+  function renderProductDetail() {
+    const container = document.getElementById("productDetail");
+    if (!container) return;
+
+    const productId = getProductIdFromURL();
+    const products = getProductList();
+
+    if (!productId || isNaN(productId)) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 4rem 1rem; color: #8a8a93;">
+          <h2 style="color: #f5f5f7; margin-bottom: 1rem;">محصولی انتخاب نشده است!</h2>
+          <p>لطفاً از طریق صفحه اصلی، عطر مورد نظر خود را انتخاب فرمایید.</p>
+          <a href="index.html#products-section" style="color: #d4af37; text-decoration: none; display: inline-block; margin-top: 1.5rem;">بازگشت به ویترین ←</a>
+        </div>
+      `;
+      return;
+    }
+
+    const item = products.find((p) => p.id === productId);
+
+    if (!item) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 4rem 1rem; color: #8a8a93;">
+          <h2 style="color: #e5484d; margin-bottom: 1rem;">عطر مورد نظر یافت نشد!</h2>
+          <p>ممکن است این رایحه به اتمام رسیده باشد یا آدرس اشتباه وارد شده باشد.</p>
+          <a href="index.html#products-section" style="color: #d4af37; text-decoration: none; display: inline-block; margin-top: 1.5rem;">مشاهده سایر عطرها ←</a>
+        </div>
+      `;
+      return;
+    }
+
+    // به‌روزرسانی عنوان تب مرورگر
+    document.title = `${item.name} | SARFUME`;
+
+    // ساخت ساختار HTML کارت محصول
+    container.innerHTML = `
+      <article class="product-detail-card">
+        <div class="product-detail__img-wrapper">
+          <img src="${item.image}" alt="${item.name}" loading="eager" />
+        </div>
+
+        <div class="product-detail__info">
+          <span class="product-detail__brand">${item.brand || "SARFUME EXCLUSIVE"}</span>
+          <h1 class="product-detail__title">${item.name}</h1>
+          <div class="product-detail__price">${formatPrice(item.price || item.rawPrice)}</div>
+
+          <div class="product-detail__meta">
+            <div class="meta-item">
+              <span class="meta-title">طبع و رایحه</span>
+              <span class="meta-value">${item.scent || "خاص و نیش"}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-title">حجم شیشه</span>
+              <span class="meta-value">${item.volume || "۱۰۰ میل"}</span>
+            </div>
+            <div class="meta-item">
+              <span class="meta-title">دسته‌بندی</span>
+              <span class="meta-value">${item.category === "perfume" ? "ادکلن لوکس" : item.category === "spray" ? "اسپری بدن" : "بادی اسپلش"}</span>
+            </div>
+          </div>
+
+          <p class="product-detail__desc">
+            ${item.description || "این ادکلن لوکس با خط بوی بی‌نظیر و ماندگاری بالا، نمادی از اصالت و جذابیت شما خواهد بود."}
+          </p>
+
+          <button class="buy-btn" id="addToCartBtn">
+            افزودن به سبد خرید
+          </button>
+        </div>
+      </article>
+    `;
+
+    // اتصال رویداد خرید
+    const buyBtn = document.getElementById("addToCartBtn");
+    if (buyBtn) {
+      buyBtn.addEventListener("click", () => {
+        handleAddToCart(item);
+        const originalText = buyBtn.textContent;
+        buyBtn.textContent = "به سبد خرید افزوده شد ✓";
+        buyBtn.style.background = "#22c55e";
+        buyBtn.style.color = "#ffffff";
+        buyBtn.disabled = true;
+
+        setTimeout(() => {
+          buyBtn.textContent = originalText;
+          buyBtn.style.background = "#d4af37";
+          buyBtn.style.color = "#0a0a0c";
+          buyBtn.disabled = false;
+        }, 1500);
+      });
+    }
+  }
+
+  // اجرای لودر در زمان مناسب
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderProductDetail);
+  } else {
+    renderProductDetail();
+  }
+})();

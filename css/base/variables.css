@@ -1,0 +1,37 @@
+:root {
+  /* پالت رنگی تم دارک لوکس */
+  --bg-main: #0a0a0c;
+  --bg-surface: #121216;
+  --bg-surface-elevated: #1a1a20;
+  --bg-glass: rgba(18, 18, 22, 0.75);
+
+  /* رنگ‌های لوکس طلایی و متالیک */
+  --gold-primary: #d4af37;
+  --gold-hover: #e5c384;
+  --gold-muted: rgba(212, 175, 55, 0.2);
+  --gold-glow: rgba(212, 175, 55, 0.15);
+
+  /* رنگ‌های متون */
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1aa;
+  --text-muted: #62626b;
+
+  /* خطوط و بردرها */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-gold: rgba(212, 175, 55, 0.35);
+
+  /* سایه‌ها و بلور شیشه‌ای */
+  --shadow-luxury: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.25);
+  --blur-glass: blur(14px);
+
+  /* شعاع گوشه‌ها */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* ترنزیشن‌ها */
+  --transition-fast: 0.2s ease;
+  --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}

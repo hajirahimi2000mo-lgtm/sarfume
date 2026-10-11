@@ -1,0 +1,187 @@
+
+.site-footer {
+  margin-top: 5rem;
+  background: var(--bg-surface, #121216);
+  border-top: 1px solid var(--border-gold, rgba(212, 175, 55, 0.2));
+  position: relative;
+  overflow: hidden;
+}
+
+/* ظرف اصلی ستون‌های فوتر */
+.footer {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 3rem;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1.2fr;
+  gap: 3rem;
+  box-sizing: border-box;
+}
+
+/* ستون معرفی و برند */
+.footer__brand {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--gold-primary, #d4af37);
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+}
+
+.footer__text {
+  color: var(--text-secondary, #a1a1aa);
+  font-size: 0.92rem;
+  line-height: 1.8;
+  max-width: 340px;
+}
+
+/* ستون‌های لینک و بخش‌ها */
+.footer__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  color: var(--text-primary, #f5f5f7);
+  position: relative;
+  display: inline-block;
+}
+
+.footer__title::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  right: 0;
+  width: 28px;
+  height: 2px;
+  background: var(--gold-primary, #d4af37);
+  border-radius: 2px;
+}
+
+.footer__links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer__links li {
+  margin-bottom: 0.65rem;
+}
+
+.footer__links a {
+  color: var(--text-secondary, #a1a1aa);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast, 0.2s ease);
+  display: inline-block;
+}
+
+.footer__links a:hover {
+  color: var(--gold-primary, #d4af37);
+  transform: translateX(-4px);
+}
+
+/* بخش ثبت‌نام در خبرنامه */
+.newsletter {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+  position: relative;
+}
+
+.newsletter__input {
+  flex: 1;
+  background: var(--bg-surface-elevated, #1a1a20);
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-full, 9999px);
+  padding: 0.7rem 1.2rem;
+  color: var(--text-primary, #f5f5f7);
+  font-family: inherit;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color var(--transition-fast, 0.2s ease),
+              box-shadow var(--transition-fast, 0.2s ease);
+}
+
+.newsletter__input::placeholder {
+  color: var(--text-muted, #62626b);
+}
+
+.newsletter__input:focus {
+  border-color: var(--gold-primary, #d4af37);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+.newsletter .btn--gold,
+.newsletter button {
+  background: linear-gradient(135deg, var(--gold-primary, #d4af37), #aa851e);
+  color: var(--bg-main, #0a0a0c);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 0.7rem 1.4rem;
+  border: none;
+  border-radius: var(--radius-full, 9999px);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.newsletter .btn--gold:hover,
+.newsletter button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.35);
+}
+
+/* کپی‌رایت انتهای فوتر */
+.footer__bottom {
+  border-top: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  padding: 1.4rem 1.5rem;
+  text-align: center;
+  background: rgba(10, 10, 12, 0.6);
+}
+
+.footer__bottom small {
+  color: var(--text-muted, #62626b);
+  font-size: 0.82rem;
+  letter-spacing: 0.3px;
+}
+
+/* واکنش‌گرایی در نمایش موبایل و تبلت */
+@media (max-width: 900px) {
+  .footer {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 3rem 1.25rem 2rem;
+  }
+
+  .footer__text {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .footer__title::after {
+    right: 50%;
+    transform: translateX(50%);
+  }
+
+  .newsletter {
+    flex-direction: column;
+  }
+
+  .newsletter .btn--gold,
+  .newsletter button {
+    width: 100%;
+  }
+
+  .footer__links a:hover {
+    transform: none;
+  }
+}

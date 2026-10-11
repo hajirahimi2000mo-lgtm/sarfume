@@ -1,0 +1,56 @@
+body {
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: "Vazirmatn", "IRANSans", "Yekan Bakh", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* تیترها و عناوین */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+/* تایپوگرافی لوگو و برند */
+.brand__name,
+.brand__text {
+  font-family: "Cinzel", Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--gold-primary);
+  text-transform: uppercase;
+}
+
+/* نشان‌ها و تگ‌های لوکس بالاسری */
+.hero__badge,
+.section-tag {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-primary);
+}
+
+/* استایل قیمت‌ها و اعداد */
+.product-card__price,
+.modal__price {
+  font-family: inherit;
+  font-weight: 700;
+  color: var(--gold-hover);
+  letter-spacing: 0.02em;
+}
+
+/* متون فرعی و راهنما */
+.hero__subtitle,
+.section-subtitle,
+.footer-brand p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 400;
+}

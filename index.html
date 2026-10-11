@@ -1,0 +1,1208 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SARFUME | لوکس و اصیل</title>
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    /* استایل‌های پایه و گرید محصولات */
+    .products-section { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+    .section-header { text-align: center; margin-bottom: 25px; }
+    .section-title { font-size: 1.8rem; color: #fff; margin-bottom: 8px; }
+    
+    .filter-bar { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #e5e5e5;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: #d4af37;
+      color: #0b0b0a;
+      border-color: #d4af37;
+      font-weight: bold;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 25px;
+    }
+    .product-card {
+      background: #141414;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(212, 175, 55, 0.6);
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.1);
+    }
+    .product-card__image-box {
+      width: 100%;
+      height: 240px;
+      background: radial-gradient(circle, #252525 0%, #0d0d0d 100%);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .product-card__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .product-card:hover .product-card__image {
+      transform: scale(1.04);
+    }
+    .product-card__title { font-size: 1.15rem; color: #fff; margin: 0 0 6px 0; }
+    .product-card__desc { font-size: 0.85rem; color: #888; margin: 0 0 16px 0; line-height: 1.5; flex-grow: 1; }
+    .product-card__footer { display: flex; justify-content: space-between; align-items: center; }
+    .product-card__price { color: #d4af37; font-weight: bold; font-size: 1.05rem; }
+    .product-card__btn {
+      background: transparent;
+      border: 1px solid #d4af37;
+      color: #d4af37;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .product-card__btn:hover {
+      background: #d4af37;
+      color: #0b0b0a;
+      font-weight: bold;
+    }
+
+    /* استایل صفحه‌بندی ۳ صفحه‌ای لوکس */
+    .pagination-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+    .pagination-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      color: #e5e5e5;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+      min-width: 44px;
+    }
+    .pagination-btn:hover:not(:disabled) {
+      border-color: #d4af37;
+      color: #d4af37;
+      background: rgba(212, 175, 55, 0.12);
+      transform: translateY(-2px);
+    }
+    .pagination-btn.active {
+      background: linear-gradient(135deg, #d4af37, #aa820a);
+      color: #0b0b0a;
+      border-color: #d4af37;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+    }
+    .pagination-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* دکمه اکانت در نوبار */
+    .auth-btn-header {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #d4af37;
+      padding: 7px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .auth-btn-header:hover {
+      background: #d4af37;
+      color: #0b0b0a;
+    }
+
+    /* مودال اختصاصی احراز هویت (Login / Signup) */
+    .auth-modal-card {
+      background: #141414;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      border-radius: 18px;
+      width: 100%;
+      max-width: 420px;
+      padding: 32px 28px;
+      position: relative;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .auth-modal-card { transform: scale(1); }
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 24px;
+      gap: 12px;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 1.05rem;
+      font-weight: bold;
+      padding-bottom: 12px;
+      cursor: pointer;
+      font-family: inherit;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+    .auth-tab-btn.active {
+      color: #d4af37;
+    }
+    .auth-tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #d4af37;
+      box-shadow: 0 0 10px #d4af37;
+    }
+    .auth-form { display: none; flex-direction: column; gap: 16px; }
+    .auth-form.active { display: flex; }
+    .auth-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: right;
+    }
+    .auth-input-group label {
+      font-size: 0.85rem;
+      color: #bbb;
+    }
+    .auth-input-group input {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 11px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.25s;
+    }
+    .auth-input-group input:focus {
+      border-color: #d4af37;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    }
+    .auth-submit-btn {
+      background: linear-gradient(135deg, #d4af37, #aa820a);
+      color: #0b0b0a;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+      margin-top: 8px;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .auth-submit-btn:hover { opacity: 0.95; transform: translateY(-1px); }
+    .auth-error {
+      color: #ff5e5e;
+      font-size: 0.85rem;
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* مودال جزئیات محصول */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      padding: 20px;
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-card {
+      background: #181818;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      border-radius: 18px;
+      max-width: 750px;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .modal-card { transform: scale(1); }
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 10;
+    }
+    .modal-close:hover { background: #d4af37; color: #000; }
+    .modal-image-box { flex: 1 1 300px; background: #0d0d0d; min-height: 320px; }
+    .modal-image { width: 100%; height: 100%; object-fit: cover; }
+    .modal-content {
+      flex: 1 1 350px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .modal-badge {
+      display: inline-block;
+      background: rgba(212, 175, 55, 0.15);
+      color: #d4af37;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+      width: fit-content;
+    }
+    .modal-title { font-size: 1.6rem; color: #fff; margin: 0 0 10px 0; }
+    .modal-desc { color: #aaa; font-size: 0.95rem; line-height: 1.6; margin-bottom: 18px; }
+    .modal-specs {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border-right: 3px solid #d4af37;
+    }
+    .modal-spec-item { font-size: 0.85rem; color: #ccc; margin-bottom: 6px; }
+    .modal-spec-item:last-child { margin-bottom: 0; }
+    .modal-footer { display: flex; justify-content: space-between; align-items: center; }
+    .modal-price { color: #d4af37; font-size: 1.3rem; font-weight: bold; }
+    .modal-add-btn {
+      background: #d4af37;
+      color: #0b0b0a;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s ease;
+    }
+    .modal-add-btn:hover { background: #f0c842; }
+
+    /* سایدبار کشویی سبد خرید */
+    .cart-drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1100;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .cart-drawer-overlay.active { opacity: 1; visibility: visible; }
+    .cart-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 100%;
+      background: #141414;
+      border-right: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+      z-index: 1101;
+      transform: translateX(-100%);
+      transition: transform 0.35s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .cart-drawer-overlay.active .cart-drawer { transform: translateX(0); }
+    .cart-drawer__header {
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-drawer__header h3 { margin: 0; color: #fff; font-size: 1.2rem; }
+    .cart-drawer__close {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 1.6rem;
+      cursor: pointer;
+    }
+    .cart-drawer__close:hover { color: #fff; }
+    .cart-drawer__body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .cart-item img {
+      width: 55px;
+      height: 55px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+    .cart-item__info { flex: 1; }
+    .cart-item__title { font-size: 0.95rem; color: #fff; margin: 0 0 4px 0; }
+    .cart-item__price { font-size: 0.85rem; color: #d4af37; }
+    .cart-item__remove {
+      background: none;
+      border: none;
+      color: #ff5555;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+    .cart-drawer__footer {
+      padding: 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      background: #101010;
+    }
+    .cart-drawer__total {
+      display: flex;
+      justify-content: space-between;
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    .cart-drawer__checkout {
+      width: 100%;
+      background: #d4af37;
+      color: #0b0b0a;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .cart-drawer__checkout:hover { background: #f0c842; }
+
+    /* نوتیفیکیشن */
+    .toast-msg {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #d4af37;
+      color: #0b0b0a;
+      font-weight: bold;
+      padding: 12px 24px;
+      border-radius: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+      z-index: 1200;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    .toast-msg.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar container">
+      <div class="navbar__right">
+        <a class="brand" href="#home">
+          <span class="brand__mark">✦</span>
+          <span class="brand__name">SARFUME<small>THE ART OF SCENT</small></span>
+        </a>
+      </div>
+      <div class="navbar__center">
+        <div class="search-box">
+          <input id="searchInput" class="search-box__input" type="search" placeholder="جست‌وجوی عطر، اسپری، بادی اسپلش..." autocomplete="off">
+        </div>
+      </div>
+      <div class="navbar__left" style="display:flex; align-items:center; gap:12px;">
+        <ul class="nav-links">
+          <li><a class="nav-link" href="#home">خانه</a></li>
+          <li><a class="nav-link" href="#products">محصولات</a></li>
+        </ul>
+        <button id="authBtn" class="auth-btn-header" type="button">
+          <span id="authBtnText">ورود / عضویت</span>
+        </button>
+        <button id="cartButton" class="cart-button" type="button" style="cursor: pointer;">
+          <span>سبد خرید</span>
+          <b id="cartCount" class="cart-count">0</b>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home">
+    <section class="hero container">
+      <div class="hero__content">
+        <span class="hero__subtitle">EXCLUSIVE FRAGRANCE</span>
+        <h1 class="hero__title">شکوه و اصالت یک رایحه ماندگار</h1>
+        <p class="hero__desc">مجموعه‌ای برگزیده از خاص‌ترین و کمیاب‌ترین پرفیوم‌ها و روایح نیش جهان</p>
+        <div class="hero__actions">
+          <a href="#products" class="btn--primary">مشاهده کاتالوگ</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="products-section container" id="products">
+      <div class="section-header">
+        <h2 class="section-title">محصولات بوتیک سارفوم</h2>
+      </div>
+
+      <div class="filter-bar" id="filters">
+        <button class="filter-btn active" data-category="all">همه محصولات</button>
+        <button class="filter-btn" data-category="perfume">عطر و ادکلن</button>
+        <button class="filter-btn" data-category="spray">اسپری خوشبوکننده</button>
+        <button class="filter-btn" data-category="body-splash">بادی اسپلش</button>
+      </div>
+
+      <div id="products-grid" class="products-grid"></div>
+
+      <!-- کانتینر صفحه‌بندی -->
+      <nav id="pagination" class="pagination-container" aria-label="صفحه‌بندی محصولات"></nav>
+    </section>
+  </main>
+
+  <!-- مودال احراز هویت (Login / Signup) -->
+  <div id="authModal" class="modal-overlay">
+    <div class="auth-modal-card">
+      <button class="modal-close" id="authModalClose">&times;</button>
+      
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="tabLoginBtn" type="button">ورود به حساب</button>
+        <button class="auth-tab-btn" id="tabSignupBtn" type="button">ثبت‌نام جدید</button>
+      </div>
+
+      <!-- فرم لاگین -->
+      <form id="loginForm" class="auth-form active">
+        <div class="auth-input-group">
+          <label for="loginEmail">ایمیل یا شماره موبایل</label>
+          <input type="text" id="loginEmail" required placeholder="example@email.com">
+        </div>
+        <div class="auth-input-group">
+          <label for="loginPassword">رمز عبور</label>
+          <input type="password" id="loginPassword" required placeholder="••••••••">
+        </div>
+        <div id="loginError" class="auth-error"></div>
+        <button type="submit" class="auth-submit-btn">ورود به حساب</button>
+      </form>
+
+      <!-- فرم ثبت‌نام -->
+      <form id="signupForm" class="auth-form">
+        <div class="auth-input-group">
+          <label for="signupName">نام و نام خانوادگی</label>
+          <input type="text" id="signupName" required placeholder="مانند: کامبیز جمال‌زاده">
+        </div>
+        <div class="auth-input-group">
+          <label for="signupEmail">ایمیل یا شماره موبایل</label>
+          <input type="text" id="signupEmail" required placeholder="example@email.com">
+        </div>
+        <div class="auth-input-group">
+          <label for="signupPassword">رمز عبور (حداقل ۶ کاراکتر)</label>
+          <input type="password" id="signupPassword" required minlength="6" placeholder="••••••••">
+        </div>
+        <div id="signupError" class="auth-error"></div>
+        <button type="submit" class="auth-submit-btn">ایجاد حساب کاربری</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- مودال جزئیات محصول -->
+  <div id="productModal" class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div class="modal-image-box">
+        <img id="modalImg" src="" alt="" class="modal-image">
+      </div>
+      <div class="modal-content">
+        <div>
+          <span id="modalCategory" class="modal-badge"></span>
+          <h2 id="modalTitle" class="modal-title"></h2>
+          <p id="modalDesc" class="modal-desc"></p>
+          <div class="modal-specs">
+            <div class="modal-spec-item"><strong>ماندگاری و پراکندگی:</strong> بسیار بالا (تضمینی)</div>
+            <div class="modal-spec-item"><strong>حجم و مشخصات:</strong> ۱۰۰ میل خالص لوکس</div>
+            <div class="modal-spec-item"><strong>اصالت کالا:</strong> ۱۰۰٪ تضمین اورجینال نیش و دست‌ساز</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <span id="modalPrice" class="modal-price"></span>
+          <button id="modalAddBtn" class="modal-add-btn" type="button">+ افزودن به سبد</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- دراور کشویی سبد خرید -->
+  <div id="cartDrawerOverlay" class="cart-drawer-overlay">
+    <div class="cart-drawer">
+      <div class="cart-drawer__header">
+        <h3>سبد خرید شما</h3>
+        <button class="cart-drawer__close" id="cartCloseBtn">&times;</button>
+      </div>
+      <div class="cart-drawer__body" id="cartItemsList"></div>
+      <div class="cart-drawer__footer">
+        <div class="cart-drawer__total">
+          <span>جمع کل:</span>
+          <span id="cartTotalPrice">۰ تومان</span>
+        </div>
+        <button class="cart-drawer__checkout" id="checkoutBtn" type="button">ثبت سفارش و پرداخت</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- توست پیام -->
+  <div id="toast" class="toast-msg">به سبد خرید اضافه شد ✓</div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>© تمامی حقوق برای بوتیک عطر SARFUME محفوظ است.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function initStore() {
+      // ۳۶ محصول با آدرس‌دهی دقیق
+      const allProducts = [
+        // ---- عطرها (16) ----
+        {id:1, name:"Nuit d'Or", faName:"نویت دوق", category:"perfume", price:2850000, image:"images/products/1.jpg", desc:"عطری فاخر با ماندگاری بالا برای شب‌های خاص. ترکیبی از عود و ادویه."},
+        {id:2, name:"Velvet Musk", faName:"ولوت ماسک", category:"perfume", price:3200000, image:"images/products/2.jpg", desc:"مشک مخملی و گرم، امضای شخصیت شما برای افراد سخت‌پسند."},
+        {id:3, name:"Oud Noir", faName:"عود نوآر", category:"perfume", price:4100000, image:"images/products/3.jpg", desc:"عود سیاه و اصیل، انتخاب پادشاهان با ماندگاری ۲۴ ساعته."},
+        {id:4, name:"Rose Élixir", faName:"رز الکسیر", category:"perfume", price:2750000, image:"images/products/4.jpg", desc:"گل رز دمشقی با رگه‌های گرم وانیل فرانسوی."},
+        {id:5, name:"Santal Précieux", faName:"سانتال پرسیو", category:"perfume", price:3600000, image:"images/products/5.jpg", desc:"چوب صندل گرم و آرامش‌بخش مناسب جلسات رسمی."},
+        {id:6, name:"Amber Royale", faName:"امبر رویال", category:"perfume", price:3450000, image:"images/products/6.jpg", desc:"کهربای سلطنتی با تلخی دلپذیر و خط بوی استثنایی."},
+        {id:7, name:"Iris Lumière", faName:"ایریس لومیر", category:"perfume", price:2950000, image:"images/products/7.jpg", desc:"زنبق روشن و لطیف برای قرارهای روزانه و رمانتیک."},
+        {id:8, name:"Cuir Sauvage", faName:"کوئیر سواژ", category:"perfume", price:3900000, image:"images/products/8.jpg", desc:"رایحه چرم وحشی و دودی، خشن و بسیار پرجذبه."},
+        {id:9, name:"Vanille Impériale", faName:"وانیل امپریال", category:"perfume", price:3050000, image:"images/products/9.jpg", desc:"وانیل شیرین ماداگاسکار با همراهی دارچین و هل."},
+        {id:10, name:"Bergamote Nuit", faName:"برگاموت نایت", category:"perfume", price:2800000, image:"images/products/10.jpg", desc:"خنکی مرکبات ایتالیایی در کنار عمق روایح چوبی."},
+        {id:11, name:"Saffron Secret", faName:"سفرون سکرت", category:"perfume", price:4300000, image:"images/products/11.jpg", desc:"زعفران ناب ایرانی، رازی از شرق در بطری لوکس."},
+        {id:12, name:"Patchouli Noir", faName:"پاتچولی نوآر", category:"perfume", price:3250000, image:"images/products/12.jpg", desc:"نعناع هندی تیره و مرموز برای فصول پاییز و زمستان."},
+        {id:13, name:"Fleur de Minuit", faName:"فلور دو مینویت", category:"perfume", price:3350000, image:"images/products/13.jpg", desc:"گل‌های خوشبوی نیمه‌شب و شکوفه‌های بهاری."},
+        {id:14, name:"Tabac Royal", faName:"تنباکو رویال", category:"perfume", price:3700000, image:"images/products/14.jpg", desc:"تنباکوی اشرافی کوبا ترکیب شده با عسل کوهی."},
+        {id:15, name:"Musc Blanc", faName:"ماسک بلنک", category:"perfume", price:2650000, image:"images/products/15.jpg", desc:"مشک سفید و تمیز، احساس پاکیزگی بی‌پایان."},
+        {id:16, name:"Ambre Éternel", faName:"امبر اترنل", category:"perfume", price:3950000, image:"images/products/16.jpg", desc:"کهربای جاودانه با پخش بوی فوق‌العاده بالا."},
+
+        // ---- اسپری‌ها (10) ----
+        {id:17, name:"Citrus Doré", faName:"سیتروس دوق", category:"spray", price:1250000, image:"images/products/17.jpg", desc:"اسپری مرکبات طلایی، سرشار از انرژی و نشاط صبحگاهی."},
+        {id:18, name:"Cedre d'Or", faName:"سدر دوق", category:"spray", price:1390000, image:"images/products/18.jpg", desc:"اسپری چوب سدر، سبک و دلپذیر برای استفاده روزمره."},
+        {id:19, name:"Jasmin d'Or", faName:"یاسمن دوق", category:"spray", price:1180000, image:"images/products/19.jpg", desc:"اسپری معطر گل یاس رازقی، سبک و آرامش‌بخش."},
+        {id:20, name:"Cacao Absolu", faName:"کاکائو ابسولو", category:"spray", price:1450000, image:"images/products/20.jpg", desc:"شکلات تلخ سوئیسی همراه با نُت قهوه موکا."},
+        {id:21, name:"Lavande Impériale", faName:"لاوندر امپریال", category:"spray", price:1120000, image:"images/products/21.jpg", desc:"اسطوخودوس تسکین‌دهنده مناسب قبل از استراحت و ورزش."},
+        {id:22, name:"Cèdre Blanc", faName:"سدر بلنک", category:"spray", price:1290000, image:"images/products/22.jpg", desc:"طراوت جنگل‌های همیشه بهار در یک اسپری باطراوت."},
+        {id:23, name:"Pêche Nectar", faName:"پش نکتار", category:"spray", price:1050000, image:"images/products/23.jpg", desc:"شهد هلو و زردآلو، رایحه‌ای آبدار و شاداب."},
+        {id:24, name:"Thé Vert Céleste", faName:"چای سبز سلست", category:"spray", price:990000, image:"images/products/24.jpg", desc:"چای سبز ضد استرس و بسیار خنک‌کننده."},
+        {id:25, name:"Fleur d'Oranger", faName:"فلور دی اورانجر", category:"spray", price:1350000, image:"images/products/25.jpg", desc:"بهارنارنج شیراز و رایحه مرکبات بهاری."},
+        {id:26, name:"Vétiver Élégant", faName:"وتیور الگانت", category:"spray", price:1420000, image:"images/products/26.jpg", desc:"خاک باران‌خورده و ریشه‌های خس‌خس معطر."},
+
+        // ---- بادی اسپلش‌ها (10) ----
+        {id:27, name:"Miel d'Or", faName:"میل دوق", category:"body-splash", price:780000, image:"images/products/27.jpg", desc:"بادی اسپلش عسل طبیعی با خواص مرطوب‌کنندگی قوی."},
+        {id:28, name:"Grenade Obscure", faName:"انار سیاه", category:"body-splash", price:850000, image:"images/products/28.jpg", desc:"ترشی و شیرینی انار تازه، طراوت کامل بعد از استحمام."},
+        {id:29, name:"Pivoine Rosée", faName:"پیوانی روزی", category:"body-splash", price:760000, image:"images/products/29.jpg", desc:"گل صدتومانی صورتی، لطافت زنانه و جذاب."},
+        {id:30, name:"Figue Noire", faName:"انجیر سیاه", category:"body-splash", price:820000, image:"images/products/30.jpg", desc:"برگ و میوه انجیر وحشی، خنک و جنگلی."},
+        {id:31, name:"Café Noir", faName:"کافه نوآر", category:"body-splash", price:880000, image:"images/products/31.jpg", desc:"اسپرسوی ایتالیایی با ته‌بوی شیرین فندق."},
+        {id:32, name:"Bois de Minuit", faName:"چوب نیمه‌شب", category:"body-splash", price:920000, image:"images/products/32.jpg", desc:"روایح چوبی شبانه با قدرت پخش عالی روی پوست."},
+        {id:33, name:"Encens Sacré", faName:"عود و بخور مقدس", category:"body-splash", price:860000, image:"images/products/33.jpg", desc:"بخور معطر شرقی برای حس آرامش عمیق."},
+        {id:34, name:"Coco Vanille", faName:"کوکو وانیل", category:"body-splash", price:740000, image:"images/products/34.jpg", desc:"نارگیل استوایی و عصاره وانیل خالص."},
+        {id:35, name:"Aqua Fraîche", faName:"اکوا فرش", category:"body-splash", price:690000, image:"images/products/35.jpg", desc:"نسیم خنک اقیانوس، طراوت مطلق بعد از باشگاه."},
+        {id:36, name:"Fruits Rouges", faName:"توت‌های سرخ", category:"body-splash", price:710000, image:"images/products/36.jpg", desc:"توت‌فرنگی وحشی و تمشک، شاداب و جوان‌پسند."}
+      ];
+
+      // متغیرهای حالت
+      const itemsPerPage = 12;
+      let currentPage = 1;
+
+      // المان‌ها
+      const grid = document.getElementById('products-grid');
+      const paginationEl = document.getElementById('pagination');
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const searchInput = document.getElementById('searchInput');
+      const cartButton = document.getElementById('cartButton');
+      const cartCountEl = document.getElementById('cartCount');
+      
+      // مودال محصول
+      const modal = document.getElementById('productModal');
+      const modalClose = document.getElementById('modalClose');
+      const modalImg = document.getElementById('modalImg');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalCategory = document.getElementById('modalCategory');
+      const modalDesc = document.getElementById('modalDesc');
+      const modalPrice = document.getElementById('modalPrice');
+      const modalAddBtn = document.getElementById('modalAddBtn');
+
+      // مودال احراز هویت
+      const authBtn = document.getElementById('authBtn');
+      const authBtnText = document.getElementById('authBtnText');
+      const authModal = document.getElementById('authModal');
+      const authModalClose = document.getElementById('authModalClose');
+      const tabLoginBtn = document.getElementById('tabLoginBtn');
+      const tabSignupBtn = document.getElementById('tabSignupBtn');
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
+      const loginError = document.getElementById('loginError');
+      const signupError = document.getElementById('signupError');
+
+      // دراور سبد خرید
+      const cartDrawerOverlay = document.getElementById('cartDrawerOverlay');
+      const cartCloseBtn = document.getElementById('cartCloseBtn');
+      const cartItemsList = document.getElementById('cartItemsList');
+      const cartTotalPrice = document.getElementById('cartTotalPrice');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      const toast = document.getElementById('toast');
+
+      let activeCat = 'all';
+      let searchVal = '';
+      let cartItems = [];
+      let activeModalProduct = null;
+
+      // کلیدهای ذخیره‌سازی داده
+      const USERS_STORAGE_KEY = 'sarfume_users_v1';
+      const CURRENT_USER_KEY = 'sarfume_current_user_v1';
+
+      // ================= کریپتوگرافی کلاینت (PBKDF2-SHA-256) =================
+      async function hashPassword(password, saltHex = null) {
+        const enc = new TextEncoder();
+        let salt;
+        if (saltHex) {
+          salt = new Uint8Array(saltHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+        } else {
+          salt = window.crypto.getRandomValues(new Uint8Array(16));
+        }
+
+        const keyMaterial = await window.crypto.subtle.importKey(
+          "raw", enc.encode(password), { name: "PBKDF2" }, false, ["deriveBits", "deriveKey"]
+        );
+
+        const derivedKey = await window.crypto.subtle.deriveKey(
+          {
+            name: "PBKDF2",
+            salt: salt,
+            iterations: 100000,
+            hash: "SHA-256"
+          },
+          keyMaterial,
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+
+        const exported = await window.crypto.subtle.exportKey("raw", derivedKey);
+        const hashArray = Array.from(new Uint8Array(exported));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        const saltStr = Array.from(salt).map(b => b.toString(16).padStart(2, '0')).join('');
+
+        return { hashHex, saltHex: saltStr };
+      }
+
+      function getUsers() {
+        return JSON.parse(localStorage.getItem(USERS_STORAGE_KEY) || '[]');
+      }
+
+      function saveUsers(users) {
+        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+      }
+
+      function getCurrentUser() {
+        return JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || 'null');
+      }
+
+      function setCurrentUser(user) {
+        if (!user) {
+          localStorage.removeItem(CURRENT_USER_KEY);
+        } else {
+          localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+        }
+        updateAuthHeader();
+      }
+
+      function updateAuthHeader() {
+        const currentUser = getCurrentUser();
+        if (currentUser) {
+          authBtnText.textContent = `${currentUser.name} (خروج)`;
+        } else {
+          authBtnText.textContent = 'ورود / عضویت';
+        }
+      }
+
+      // توابع کمکی
+      function normalizeText(text) {
+        if (!text) return "";
+        return text
+          .toString()
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/ي/g, "ی")
+          .replace(/ك/g, "ک")
+          .trim();
+      }
+
+      function getProductImage(item) {
+        return item.image || "images/products/1.jpg";
+      }
+
+      function formatPrice(num) {
+        return Number(num).toLocaleString('fa-IR') + ' تومان';
+      }
+
+      function getCategoryLabel(cat) {
+        if (cat === 'perfume') return 'عطر و ادکلن';
+        if (cat === 'spray') return 'اسپری خوشبوکننده';
+        if (cat === 'body-splash') return 'بادی اسپلش';
+        return cat;
+      }
+
+      function showToast(text) {
+        toast.textContent = text;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2200);
+      }
+
+      // رندر محصولات
+      function render() {
+        if (!grid) return;
+        const q = normalizeText(searchVal);
+
+        const filtered = allProducts.filter(item => {
+          const matchCat = (activeCat === 'all') || (item.category === activeCat);
+          if (!matchCat) return false;
+          if (!q) return true;
+
+          const haystack = normalizeText(`${item.name} ${item.faName} ${item.desc} ${getCategoryLabel(item.category)}`);
+          return haystack.includes(q);
+        });
+
+        const totalItems = filtered.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
+
+        if (currentPage > totalPages) currentPage = totalPages;
+        if (currentPage < 1) currentPage = 1;
+
+        if (totalItems === 0) {
+          grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 40px; color:#888; font-size:1.1rem;">متأسفانه موردی با این مشخصات یافت نشد 🔍</div>';
+          if (paginationEl) paginationEl.innerHTML = '';
+          return;
+        }
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const paginatedItems = filtered.slice(startIndex, startIndex + itemsPerPage);
+
+        grid.innerHTML = paginatedItems.map(item => {
+          const imgSrc = getProductImage(item);
+          return `
+            <article class="product-card" data-card-id="${item.id}">
+              <div class="product-card__image-box">
+                <img src="${imgSrc}" alt="${item.name}" class="product-card__image" loading="lazy">
+              </div>
+              <h3 class="product-card__title">${item.name} <small style="font-size:0.8rem; color:#888;">(${item.faName})</small></h3>
+              <p class="product-card__desc">${item.desc}</p>
+              <div class="product-card__footer">
+                <span class="product-card__price">${formatPrice(item.price)}</span>
+                <button class="product-card__btn" type="button" data-add-id="${item.id}">+ افزودن</button>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        renderPagination(totalPages);
+      }
+
+      function renderPagination(totalPages) {
+        if (!paginationEl) return;
+        if (totalPages <= 1) {
+          paginationEl.innerHTML = '';
+          return;
+        }
+
+        let html = '';
+        const prevDisabled = currentPage === 1 ? 'disabled' : '';
+        html += `<button class="pagination-btn" ${prevDisabled} data-page="${currentPage - 1}">قبلی</button>`;
+
+        for (let i = 1; i <= totalPages; i++) {
+          const activeClass = i === currentPage ? 'active' : '';
+          html += `<button class="pagination-btn ${activeClass}" data-page="${i}">${i.toLocaleString('fa-IR')}</button>`;
+        }
+
+        const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+        html += `<button class="pagination-btn" ${nextDisabled} data-page="${currentPage + 1}">بعدی</button>`;
+
+        paginationEl.innerHTML = html;
+      }
+
+      if (paginationEl) {
+        paginationEl.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-page]');
+          if (!btn || btn.disabled) return;
+
+          const targetPage = Number(btn.getAttribute('data-page'));
+          if (targetPage && targetPage !== currentPage) {
+            currentPage = targetPage;
+            render();
+            document.getElementById('products')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
+
+      // سبد خرید
+      function addToCart(productId) {
+        const prod = allProducts.find(p => p.id === Number(productId));
+        if (!prod) return;
+
+        cartItems.push(prod);
+        updateCartUI();
+        showToast(`${prod.name} به سبد خرید اضافه شد ✓`);
+      }
+
+      function removeFromCart(index) {
+        cartItems.splice(index, 1);
+        updateCartUI();
+      }
+
+      function updateCartUI() {
+        cartCountEl.textContent = cartItems.length.toLocaleString('fa-IR');
+        
+        if (cartItems.length === 0) {
+          cartItemsList.innerHTML = '<p style="text-align:center; color:#777; margin-top:40px;">سبد خرید شما در حال حاضر خالی است.</p>';
+          cartTotalPrice.textContent = '۰ تومان';
+          return;
+        }
+
+        let total = 0;
+        cartItemsList.innerHTML = cartItems.map((item, idx) => {
+          total += item.price;
+          return `
+            <div class="cart-item">
+              <img src="${getProductImage(item)}" alt="${item.name}">
+              <div class="cart-item__info">
+                <div class="cart-item__title">${item.name}</div>
+                <div class="cart-item__price">${formatPrice(item.price)}</div>
+              </div>
+              <button class="cart-item__remove" data-remove-idx="${idx}" title="حذف">&times;</button>
+            </div>
+          `;
+        }).join('');
+
+        cartTotalPrice.textContent = formatPrice(total);
+      }
+
+      // مدیریت باز و بسته شدن مودال محصول
+      function openModal(id) {
+        const product = allProducts.find(p => p.id === Number(id));
+        if (!product) return;
+
+        activeModalProduct = product;
+        modalImg.src = getProductImage(product);
+        modalTitle.textContent = `${product.name} (${product.faName})`;
+        modalCategory.textContent = getCategoryLabel(product.category);
+        modalDesc.textContent = product.desc;
+        modalPrice.textContent = formatPrice(product.price);
+        
+        modal.classList.add('active');
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+      }
+
+      // باز و بسته شدن مودال احراز هویت
+      function openAuthModal(mode = 'login') {
+        loginError.style.display = 'none';
+        signupError.style.display = 'none';
+        if (mode === 'login') {
+          tabLoginBtn.classList.add('active');
+          tabSignupBtn.classList.remove('active');
+          loginForm.classList.add('active');
+          signupForm.classList.remove('active');
+        } else {
+          tabSignupBtn.classList.add('active');
+          tabLoginBtn.classList.remove('active');
+          signupForm.classList.add('active');
+          loginForm.classList.remove('active');
+        }
+        authModal.classList.add('active');
+      }
+
+      function closeAuthModal() {
+        authModal.classList.remove('active');
+      }
+
+      if (authBtn) {
+        authBtn.addEventListener('click', () => {
+          const user = getCurrentUser();
+          if (user) {
+            if (confirm(`آیا می‌خواهید از حساب (${user.name}) خارج شوید؟`)) {
+              setCurrentUser(null);
+              showToast('با موفقیت خارج شدید');
+            }
+          } else {
+            openAuthModal('login');
+          }
+        });
+      }
+
+      if (tabLoginBtn && tabSignupBtn) {
+        tabLoginBtn.addEventListener('click', () => openAuthModal('login'));
+        tabSignupBtn.addEventListener('click', () => openAuthModal('signup'));
+      }
+      if (authModalClose) authModalClose.addEventListener('click', closeAuthModal);
+      if (authModal) {
+        authModal.addEventListener('click', (e) => {
+          if (e.target === authModal) closeAuthModal();
+        });
+      }
+
+      // لاجیک فرم ثبت‌نام
+      if (signupForm) {
+        signupForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          signupError.style.display = 'none';
+
+          const name = document.getElementById('signupName').value.trim();
+          const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+          const password = document.getElementById('signupPassword').value;
+
+          if (!name || !email || !password) {
+            signupError.textContent = 'لطفاً تمامی فیلدها را تکمیل کنید.';
+            signupError.style.display = 'block';
+            return;
+          }
+
+          const users = getUsers();
+          const exists = users.find(u => u.email === email);
+          if (exists) {
+            signupError.textContent = 'این ایمیل یا شماره قبلاً ثبت شده است.';
+            signupError.style.display = 'block';
+            return;
+          }
+
+          const { hashHex, saltHex } = await hashPassword(password);
+          const newUser = {
+            id: Date.now(),
+            name,
+            email,
+            hash: hashHex,
+            salt: saltHex,
+            createdAt: new Date().toISOString()
+          };
+
+          users.push(newUser);
+          saveUsers(users);
+          setCurrentUser({ id: newUser.id, name: newUser.name, email: newUser.email });
+          closeAuthModal();
+          signupForm.reset();
+          showToast(`خوش آمدید ${name} عزیز ✦`);
+        });
+      }
+
+      // لاجیک فرم ورود
+      if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          loginError.style.display = 'none';
+
+          const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+          const password = document.getElementById('loginPassword').value;
+
+          const users = getUsers();
+          const user = users.find(u => u.email === email);
+          if (!user) {
+            loginError.textContent = 'کاربری با این مشخصات یافت نشد.';
+            loginError.style.display = 'block';
+            return;
+          }
+
+          const { hashHex } = await hashPassword(password, user.salt);
+          if (hashHex !== user.hash) {
+            loginError.textContent = 'رمز عبور وارد شده نادرست است.';
+            loginError.style.display = 'block';
+            return;
+          }
+
+          setCurrentUser({ id: user.id, name: user.name, email: user.email });
+          closeAuthModal();
+          loginForm.reset();
+          showToast(`خوش برگشتید ${user.name} عزیز ✦`);
+        });
+      }
+
+      // سایر رویدادها
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchVal = e.target.value;
+          currentPage = 1;
+          render();
+
+          if (searchVal.trim().length > 0) {
+            document.getElementById('products')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+      }
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeCat = btn.getAttribute('data-category');
+          currentPage = 1;
+          render();
+        });
+      });
+
+      if (grid) {
+        grid.addEventListener('click', (e) => {
+          const addBtn = e.target.closest('[data-add-id]');
+          if (addBtn) {
+            e.stopPropagation();
+            addToCart(addBtn.getAttribute('data-add-id'));
+            return;
+          }
+
+          const card = e.target.closest('[data-card-id]');
+          if (card) {
+            openModal(card.getAttribute('data-card-id'));
+          }
+        });
+      }
+
+      if (modalAddBtn) {
+        modalAddBtn.addEventListener('click', () => {
+          if (activeModalProduct) {
+            addToCart(activeModalProduct.id);
+            closeModal();
+          }
+        });
+      }
+      if (modalClose) modalClose.addEventListener('click', closeModal);
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal();
+        });
+      }
+
+      if (cartButton) {
+        cartButton.addEventListener('click', () => {
+          cartDrawerOverlay.classList.add('active');
+        });
+      }
+      if (cartCloseBtn) {
+        cartCloseBtn.addEventListener('click', () => {
+          cartDrawerOverlay.classList.remove('active');
+        });
+      }
+      if (cartDrawerOverlay) {
+        cartDrawerOverlay.addEventListener('click', (e) => {
+          if (e.target === cartDrawerOverlay) cartDrawerOverlay.classList.remove('active');
+        });
+      }
+
+      if (cartItemsList) {
+        cartItemsList.addEventListener('click', (e) => {
+          const removeBtn = e.target.closest('[data-remove-idx]');
+          if (removeBtn) {
+            const idx = Number(removeBtn.getAttribute('data-remove-idx'));
+            removeFromCart(idx);
+          }
+        });
+      }
+
+      if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+          if (cartItems.length === 0) {
+            alert('سبد خرید شما خالی است!');
+            return;
+          }
+          const user = getCurrentUser();
+          const userGreeting = user ? `کاربر گرامی ${user.name}` : 'کاربر مهمان';
+          alert(`${userGreeting}، سفارش شما با مجموع ${cartTotalPrice.textContent} ثبت شد و در حال پردازش است.`);
+          cartItems = [];
+          updateCartUI();
+          cartDrawerOverlay.classList.remove('active');
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal();
+          closeAuthModal();
+          cartDrawerOverlay.classList.remove('active');
+        }
+      });
+
+      // راه‌اندازی اولیه
+      updateAuthHeader();
+      render();
+      updateCartUI();
+    })();
+  </script>
+</body>
+</html>

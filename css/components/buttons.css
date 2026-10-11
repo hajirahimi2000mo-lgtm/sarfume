@@ -1,0 +1,123 @@
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.8rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  border-radius: var(--radius-full, 9999px);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: all var(--transition-fast, 0.2s ease);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--gold-hover, #e5c384);
+  outline-offset: 3px;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+/* ۲. دکمه اصلی (Primary Gold) */
+.btn-primary {
+  color: var(--bg-main, #0a0a0c);
+  background: linear-gradient(135deg, var(--gold-primary, #d4af37), #aa851e);
+  border-color: transparent;
+  font-weight: 700;
+  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
+  filter: brightness(1.08);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+}
+
+/* ۳. دکمه ثانویه / شیشه‌ای (Secondary Glass) */
+.btn-secondary {
+  color: var(--text-primary, #f5f5f7);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--border-subtle, rgba(255, 255, 255, 0.12));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--gold-primary, #d4af37);
+  color: var(--gold-primary, #d4af37);
+  transform: translateY(-2px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* ۴. دکمه خطی طلایی (Outline Gold) */
+.btn-outline {
+  color: var(--gold-primary, #d4af37);
+  background: transparent;
+  border-color: var(--gold-primary, #d4af37);
+}
+
+.btn-outline:hover {
+  background: var(--gold-primary, #d4af37);
+  color: var(--bg-main, #0a0a0c);
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.35);
+  transform: translateY(-2px);
+}
+
+.btn-outline:active {
+  transform: translateY(0);
+}
+
+/* ۵. سایزبندی‌های متنوع */
+.btn-sm {
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  border-radius: var(--radius-sm, 8px);
+}
+
+.btn-lg {
+  padding: 0.95rem 2.4rem;
+  font-size: 1.05rem;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ۶. دکمه‌های آیکونی و گرد */
+.btn-icon {
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--bg-surface, #121216);
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  color: var(--text-primary, #f5f5f7);
+}
+
+.btn-icon:hover {
+  border-color: var(--gold-primary, #d4af37);
+  color: var(--gold-primary, #d4af37);
+  transform: translateY(-2px);
+}
